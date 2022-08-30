@@ -17,32 +17,34 @@ describe('prisma-mysql-explain ', () => {
             f8: null,
             f9: 1n,
             f10: 100,
-            f11: 'Using where'
-          }
+            f11: 'Using where',
+          },
         ]
-      }
+      },
     }
     const mockEvent = {
       timestamp: new Date(),
       query: 'SELECT * FROM Post WHERE title = ?',
       params: '["x"]',
       duration: 66,
-      target: 'quaint::connector::metrics'
+      target: 'quaint::connector::metrics',
     }
     const result = await explainQuery(mockClientLike, mockEvent)
-    expect(result).toEqual([{
-      "id": 1n,
-      "key": null,
-      "key_len": null,
-      "partitions": null,
-      "possible_keys": null,
-      "ref": null,
-      "rows": 1n,
-      "select_type": "SIMPLE",
-      "table": "Post",
-      "type": "ALL",
-      "filtered": 100,
-      "extra": "Using where",
-    }])
+    expect(result).toEqual([
+      {
+        id: 1n,
+        key: null,
+        key_len: null,
+        partitions: null,
+        possible_keys: null,
+        ref: null,
+        rows: 1n,
+        select_type: 'SIMPLE',
+        table: 'Post',
+        type: 'ALL',
+        filtered: 100,
+        extra: 'Using where',
+      },
+    ])
   })
 })
