@@ -1,5 +1,7 @@
 # prisma-mysql-explain
 
+Execute mysql explain for [Prisma](https://www.prisma.io/)
+
 ### WARNING
 This library is for development environments.
 
