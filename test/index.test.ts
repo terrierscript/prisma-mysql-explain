@@ -52,7 +52,7 @@ describe("prisma-mysql-explain", () => {
       const mockEvent = {
         timestamp: new Date(),
         query: "select * from Post where title = ?",
-        params: '[]',
+        params: "[]",
         duration: 66,
         target: "quaint::connector::metrics",
       }
@@ -84,13 +84,12 @@ describe("prisma-mysql-explain", () => {
     }
     const mockEvent = {
       timestamp: new Date(),
-      query: 'BEGIN',
-      params: '[]',
+      query: "BEGIN",
+      params: "[]",
       duration: 31,
-      target: 'quaint::connector::metrics'
+      target: "quaint::connector::metrics",
     }
     const result = await explainQuery(mockClientLike, mockEvent)
     expect(result).toBeUndefined()
   })
-
 })
