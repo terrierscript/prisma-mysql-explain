@@ -29,6 +29,14 @@
     "semi": false,
     "trailingComma": "es5"
   },
+  "keywords": [
+    "prisma",
+    "mysql",
+    "explain",
+    "database",
+    "sql",
+    "typescript"
+  ],
   "name": "prisma-mysql-explain",
   "author": "terrierscript",
   "module": "dist/prisma-mysql-explain.esm.js",
