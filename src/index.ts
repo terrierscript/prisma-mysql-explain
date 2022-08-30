@@ -1,13 +1,5 @@
 import * as SqlString from "sqlstring"
-import * as Papa from "papaparse"
-
-const parseParam = (param: string) => {
-  const removeBlacket = param.replace(/^\[/, "").replace(/\]$/, "")
-  const parsed = Papa.parse(removeBlacket, {
-    dynamicTyping: true,
-  })
-  return parsed.data[0]
-}
+import { parseParam } from "./lib/parseParam"
 
 type PrismaQueryEventLike = {
   timestamp: Date
@@ -25,7 +17,7 @@ export const explainQuery = async (
   prisma: PrismaClientLike,
   event: PrismaQueryEventLike
 ) => {
-  if (!event.query.startsWith("SELECT ")) {
+  if (!event.query.toUpperCase().startsWith("SELECT ")) {
     return
   }
 

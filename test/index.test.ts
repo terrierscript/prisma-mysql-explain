@@ -1,7 +1,7 @@
 import { explainQuery } from "../src"
 
-describe("prisma-mysql-explain ", () => {
-  it("explainQuery", async () => {
+describe("prisma-mysql-explain", () => {
+  describe("default case", () => {
     const mockClientLike = {
       $queryRawUnsafe: async () => {
         return [
@@ -22,29 +22,75 @@ describe("prisma-mysql-explain ", () => {
         ]
       },
     }
+    it("explainQuery", async () => {
+      const mockEvent = {
+        timestamp: new Date(),
+        query: "SELECT * FROM Post WHERE title = ?",
+        params: '["x"]',
+        duration: 66,
+        target: "quaint::connector::metrics",
+      }
+      const result = await explainQuery(mockClientLike, mockEvent)
+      expect(result).toEqual([
+        {
+          id: 1n,
+          key: null,
+          key_len: null,
+          partitions: null,
+          possible_keys: null,
+          ref: null,
+          rows: 1n,
+          select_type: "SIMPLE",
+          table: "Post",
+          type: "ALL",
+          filtered: 100,
+          extra: "Using where",
+        },
+      ])
+    })
+    it("lower case", async () => {
+      const mockEvent = {
+        timestamp: new Date(),
+        query: "select * from Post where title = ?",
+        params: '[]',
+        duration: 66,
+        target: "quaint::connector::metrics",
+      }
+      const result = await explainQuery(mockClientLike, mockEvent)
+      expect(result).toEqual([
+        {
+          id: 1n,
+          key: null,
+          key_len: null,
+          partitions: null,
+          possible_keys: null,
+          ref: null,
+          rows: 1n,
+          select_type: "SIMPLE",
+          table: "Post",
+          type: "ALL",
+          filtered: 100,
+          extra: "Using where",
+        },
+      ])
+    })
+  })
+
+  it("ignore when insert query ", async () => {
+    const mockClientLike = {
+      $queryRawUnsafe: async () => {
+        return []
+      },
+    }
     const mockEvent = {
       timestamp: new Date(),
-      query: "SELECT * FROM Post WHERE title = ?",
-      params: '["x"]',
-      duration: 66,
-      target: "quaint::connector::metrics",
+      query: 'BEGIN',
+      params: '[]',
+      duration: 31,
+      target: 'quaint::connector::metrics'
     }
     const result = await explainQuery(mockClientLike, mockEvent)
-    expect(result).toEqual([
-      {
-        id: 1n,
-        key: null,
-        key_len: null,
-        partitions: null,
-        possible_keys: null,
-        ref: null,
-        rows: 1n,
-        select_type: "SIMPLE",
-        table: "Post",
-        type: "ALL",
-        filtered: 100,
-        extra: "Using where",
-      },
-    ])
+    expect(result).toBeUndefined()
   })
+
 })
