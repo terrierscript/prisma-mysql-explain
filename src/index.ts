@@ -1,17 +1,6 @@
-import * as SqlString from "sqlstring"
-import { parseParam } from "./lib/parseParam"
-
-type PrismaQueryEventLike = {
-  timestamp: Date
-  query: string
-  params: string
-  duration: number
-  target: string
-}
-
-type PrismaClientLike = {
-  $queryRawUnsafe(query: string, ...values: any[]): Promise<any>
-}
+import { convertExplainRecord } from "./lib/convertExplainRecord"
+import { revertToRawQuery } from "./lib/revertToRawQuery"
+import { PrismaClientLike, PrismaQueryEventLike } from "./lib/types"
 
 export const explainQuery = async (
   prisma: PrismaClientLike,
@@ -21,12 +10,10 @@ export const explainQuery = async (
     return
   }
 
-  const params = parseParam(event.params)
-
-  if (!Array.isArray(params)) {
+  const rawQuery = revertToRawQuery(event)
+  if (!rawQuery) {
     return
   }
-  const rawQuery = SqlString.format(event.query, params)
 
   const explain = `EXPLAIN ${rawQuery}`
   const explainResults = await prisma.$queryRawUnsafe(explain)
@@ -34,20 +21,7 @@ export const explainQuery = async (
     return []
   }
   return explainResults.map(row => {
-    return {
-      id: row["f0"],
-      select_type: row["f1"],
-      table: row["f2"],
-      partitions: row["f3"],
-      type: row["f4"],
-      possible_keys: row["f5"],
-      key: row["f6"],
-      key_len: row["f7"],
-      ref: row["f8"],
-      rows: row["f9"],
-      filtered: row["f10"],
-      extra: row["f11"],
-    }
+    return convertExplainRecord(row)
   })
 }
 
