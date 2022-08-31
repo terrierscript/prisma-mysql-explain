@@ -44,11 +44,11 @@
   "size-limit": [
     {
       "path": "dist/prisma-mysql-explain.cjs.production.min.js",
-      "limit": "10 KB"
+      "limit": "12 KB"
     },
     {
       "path": "dist/prisma-mysql-explain.esm.js",
-      "limit": "10 KB"
+      "limit": "12 KB"
     }
   ],
   "devDependencies": {
