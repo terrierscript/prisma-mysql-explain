@@ -6,7 +6,7 @@ import { PrismaClientLike, PrismaQueryEventLike } from "./types"
 export const explain = async (
   prisma: PrismaClientLike,
   event: PrismaQueryEventLike,
-  cache: ExplainResultCache,
+  cache: ExplainResultCache
 ) => {
   if (!event.query.toUpperCase().startsWith("SELECT ")) {
     return

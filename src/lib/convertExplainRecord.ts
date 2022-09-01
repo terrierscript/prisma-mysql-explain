@@ -1,4 +1,3 @@
-
 export const convertExplainRecord = (row: Record<string, any>) => {
   return {
     id: row["f0"],

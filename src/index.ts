@@ -6,10 +6,14 @@ type Option = {
   cacheType: CacheType
 }
 
-export const createExplain = (prisma: PrismaClientLike, option: Option = { cacheType: "query" }) => {
+export const createExplain = (
+  prisma: PrismaClientLike,
+  option: Option = { cacheType: "query" }
+) => {
   const cache = createCache(option.cacheType)
 
-  const explainEvent = (event: PrismaQueryEventLike) => explain(prisma, event, cache)
+  const explainEvent = (event: PrismaQueryEventLike) =>
+    explain(prisma, event, cache)
 
   return explainEvent
 }

@@ -31,9 +31,8 @@ export const createCache = (type: CacheType) => {
         return
       }
       cache.set(key, result)
-    }
+    },
   }
-
 }
 
 export type ExplainResultCache = ReturnType<typeof createCache>
