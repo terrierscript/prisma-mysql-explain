@@ -6,12 +6,12 @@ import { PrismaClientLike, PrismaQueryEventLike } from "./types"
 export const explain = async (
   prisma: PrismaClientLike,
   event: PrismaQueryEventLike,
-  cache: ExplainResultCache
+  cache?: ExplainResultCache
 ) => {
   if (!event.query.toUpperCase().startsWith("SELECT ")) {
     return
   }
-  const cacheResult = cache.get(event)
+  const cacheResult = cache?.get(event)
   if (cacheResult) {
     return cacheResult
   }
@@ -29,6 +29,6 @@ export const explain = async (
   const result = explainResults.map(row => {
     return convertExplainRecord(row)
   })
-  cache.set(event, result)
+  cache?.set(event, result)
   return result
 }
