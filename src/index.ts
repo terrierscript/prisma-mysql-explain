@@ -12,8 +12,9 @@ export const createExplain = (
 ) => {
   const cache = createCache(option.cacheType)
 
-  const explainEvent = (event: PrismaQueryEventLike) =>
+  const explainEvent = (event: PrismaQueryEventLike) => {
     explain(prisma, event, cache)
+  }
 
   return explainEvent
 }
