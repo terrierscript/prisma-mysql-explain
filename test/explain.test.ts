@@ -1,8 +1,9 @@
-import { createExplain } from "../src"
+import { explain } from "../src/lib/explain"
+import { PrismaClientLike, PrismaQueryEventLike } from "../src/lib/types"
 
 describe("prisma-mysql-explain", () => {
   describe("default case", () => {
-    const mockClientLike = {
+    const mockClientLike: PrismaClientLike = {
       $queryRawUnsafe: async () => {
         return [
           {
@@ -21,7 +22,12 @@ describe("prisma-mysql-explain", () => {
           },
         ]
       },
+      $on: (
+        _eventType: "query",
+        _cb: (event: PrismaQueryEventLike) => void
+      ) => {},
     }
+
     it("explainQuery", async () => {
       const mockEvent = {
         timestamp: new Date(),
@@ -30,8 +36,7 @@ describe("prisma-mysql-explain", () => {
         duration: 66,
         target: "quaint::connector::metrics",
       }
-      const explain = createExplain(mockClientLike)
-      const result = await explain(mockEvent)
+      const result = await explain(mockClientLike, mockEvent)
       expect(result).toEqual([
         {
           id: 1n,
@@ -57,8 +62,7 @@ describe("prisma-mysql-explain", () => {
         duration: 66,
         target: "quaint::connector::metrics",
       }
-      const explain = createExplain(mockClientLike)
-      const result = await explain(mockEvent)
+      const result = await explain(mockClientLike, mockEvent)
 
       expect(result).toEqual([
         {
@@ -84,6 +88,10 @@ describe("prisma-mysql-explain", () => {
       $queryRawUnsafe: async () => {
         return []
       },
+      $on: (
+        _eventType: "query",
+        _cb: (event: PrismaQueryEventLike) => void
+      ) => {},
     }
     const mockEvent = {
       timestamp: new Date(),
@@ -92,8 +100,7 @@ describe("prisma-mysql-explain", () => {
       duration: 31,
       target: "quaint::connector::metrics",
     }
-    const explain = createExplain(mockClientLike)
-    const result = await explain(mockEvent)
+    const result = await explain(mockClientLike, mockEvent)
 
     expect(result).toBeUndefined()
   })
