@@ -25,11 +25,11 @@ describe("event", () => {
       },
       $on: (eventType: "query", cb: (event: PrismaQueryEventLike) => void) => {
         event.on(eventType, cb)
-      }
+      },
     }
 
     const ev = creatExplainQuery(mockClientLike)
-    ev.onExplain((result) => {
+    ev.onExplain(result => {
       expect(result).toEqual([
         {
           id: 1n,
@@ -56,6 +56,4 @@ describe("event", () => {
     }
     event.emit("query", mockEvent)
   })
-
 })
-

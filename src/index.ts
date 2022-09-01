@@ -8,9 +8,15 @@ type Option = {
   cacheType: CacheType
 }
 
-type ExplainHandler = (explain: ExplainRecord[], event: PrismaQueryEventLike) => void
+type ExplainHandler = (
+  explain: ExplainRecord[],
+  event: PrismaQueryEventLike
+) => void
 
-export const creatExplainQuery = (prisma: PrismaClientLike, option: Option = { cacheType: "query" }) => {
+export const creatExplainQuery = (
+  prisma: PrismaClientLike,
+  option: Option = { cacheType: "query" }
+) => {
   return {
     onExplain: (handler: ExplainHandler) => {
       const cache = createCache(option.cacheType)
@@ -21,7 +27,7 @@ export const creatExplainQuery = (prisma: PrismaClientLike, option: Option = { c
         }
         handler(result, event)
       })
-    }
+    },
   }
 }
 

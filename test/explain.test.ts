@@ -22,8 +22,10 @@ describe("prisma-mysql-explain", () => {
           },
         ]
       },
-      $on: (_eventType: "query", _cb: (event: PrismaQueryEventLike) => void) => {
-      }
+      $on: (
+        _eventType: "query",
+        _cb: (event: PrismaQueryEventLike) => void
+      ) => {},
     }
 
     it("explainQuery", async () => {
@@ -86,8 +88,10 @@ describe("prisma-mysql-explain", () => {
       $queryRawUnsafe: async () => {
         return []
       },
-      $on: (_eventType: "query", _cb: (event: PrismaQueryEventLike) => void) => {
-      }
+      $on: (
+        _eventType: "query",
+        _cb: (event: PrismaQueryEventLike) => void
+      ) => {},
     }
     const mockEvent = {
       timestamp: new Date(),
