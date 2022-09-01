@@ -54,6 +54,8 @@
   "devDependencies": {
     "@prisma/client": "^4.2.1",
     "@size-limit/preset-small-lib": "^8.0.1",
+    "@size-limit/webpack": "^8.0.1",
+    "@size-limit/webpack-why": "^8.0.1",
     "@types/papaparse": "^5.3.4",
     "@types/sqlstring": "^2.3.0",
     "husky": "^8.0.1",
