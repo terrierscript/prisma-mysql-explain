@@ -10,17 +10,42 @@ This library is for development environments.
 ## usage
 
 ```ts
-// Need query event log
+import { createExplain } from "prisma-mysql-explain"
 
-export const createPrismaClientWithExplain = () => {
+const createPrisma = () => {
+  // Need query event log
   const prisma = new PrismaClient({
     log: [{ level: "query", emit: "event" }]
   })
-  // append $on event
+
+  const explain = createExplain(prisma)
+
   prisma.$on("query", async (event) => {
-    const result = await explainQuery(prisma, event)
-    console.log(result)
+    const result = await explain(event)
+    if(!reuslt){
+      return
+    }
+    console.log({ result })
   })
   return prisma
 }
+
+
 ```
+
+## API
+
+### `createExplain(prisma: PrismaClient, option: Option?) : ExplainEvent`
+
+**Option**
+
+* cacheType
+  * query(default) - Cache with query
+  * param - Cache with query and params
+  * none - Disable cahce
+
+**Return**
+
+* `ExplainEvent(event: Prisma.QueryEvent) => ExplainResult[]`
+
+

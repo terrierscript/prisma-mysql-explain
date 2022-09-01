@@ -1,4 +1,4 @@
-import { explainQuery } from "../src"
+import { createExplain } from "../src"
 
 describe("prisma-mysql-explain", () => {
   describe("default case", () => {
@@ -30,7 +30,8 @@ describe("prisma-mysql-explain", () => {
         duration: 66,
         target: "quaint::connector::metrics",
       }
-      const result = await explainQuery(mockClientLike, mockEvent)
+      const explain = createExplain(mockClientLike)
+      const result = await explain(mockEvent)
       expect(result).toEqual([
         {
           id: 1n,
@@ -56,7 +57,9 @@ describe("prisma-mysql-explain", () => {
         duration: 66,
         target: "quaint::connector::metrics",
       }
-      const result = await explainQuery(mockClientLike, mockEvent)
+      const explain = createExplain(mockClientLike)
+      const result = await explain(mockEvent)
+
       expect(result).toEqual([
         {
           id: 1n,
@@ -89,7 +92,9 @@ describe("prisma-mysql-explain", () => {
       duration: 31,
       target: "quaint::connector::metrics",
     }
-    const result = await explainQuery(mockClientLike, mockEvent)
+    const explain = createExplain(mockClientLike)
+    const result = await explain(mockEvent)
+
     expect(result).toBeUndefined()
   })
 })

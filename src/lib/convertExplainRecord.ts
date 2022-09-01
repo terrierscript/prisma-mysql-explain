@@ -1,3 +1,4 @@
+
 export const convertExplainRecord = (row: Record<string, any>) => {
   return {
     id: row["f0"],
@@ -14,3 +15,5 @@ export const convertExplainRecord = (row: Record<string, any>) => {
     extra: row["f11"],
   }
 }
+
+export type ExplainRecord = ReturnType<typeof convertExplainRecord>
