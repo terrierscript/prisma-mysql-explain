@@ -3,7 +3,7 @@ import { convertExplainRecord } from "./convertExplainRecord"
 import { revertToRawQuery } from "./revertToRawQuery"
 import { PrismaClientLike, PrismaQueryEventLike } from "./types"
 
-export const explain = async (
+export const executeExplain = async (
   prisma: PrismaClientLike,
   event: PrismaQueryEventLike,
   cache?: ExplainResultCache

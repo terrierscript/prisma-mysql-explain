@@ -1,32 +1,20 @@
 import { CacheType, createCache } from "./lib/cache"
-import { explain } from "./lib/explain"
+import { executeExplain } from "./lib/explain"
 import { PrismaClientLike, PrismaQueryEventLike } from "./lib/types"
-
-import { ExplainRecord } from "./lib/convertExplainRecord"
 
 type Option = {
   cacheType: CacheType
 }
 
-type ExplainHandler = (
-  explain: ExplainRecord[],
-  event: PrismaQueryEventLike
-) => void
-
 export const creatExplainQuery = (
   prisma: PrismaClientLike,
   option: Option = { cacheType: "query" }
 ) => {
+  const cache = createCache(option.cacheType)
   return {
-    onExplain: (handler: ExplainHandler) => {
-      const cache = createCache(option.cacheType)
-      prisma.$on("query", async (event: PrismaQueryEventLike) => {
-        const result = await explain(prisma, event, cache)
-        if (!result) {
-          return
-        }
-        handler(result, event)
-      })
+    explain: async (event: PrismaQueryEventLike) => {
+      const explainResult = await executeExplain(prisma, event, cache)
+      return explainResult
     },
   }
 }

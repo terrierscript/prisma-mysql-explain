@@ -20,8 +20,12 @@ const createPrisma = () => {
 
   const prismaExplain = creatExplainQuery(prisma, {cacheType: "params"})
 
-  prismaExplain.onExplain((explainResult, event: Prisma.QueryEvent) => {
-    console.log({ explainResult, event })
+  prisma.$on("query", async (event) => {
+    const result = await prismaExplain.explain(event)
+    if (!result) {
+      return
+    }
+    console.log(result)
   })
   
   return prisma
@@ -42,6 +46,6 @@ const createPrisma = () => {
 
 **Return**
 
-* `onExplain: (explain: ExplainRecord[], event: Prisma.QueryEvent) => ExplainResult[]`
+* `explain: (event: Prisma.QueryEvent) => ExplainResult[]`
 
 
