@@ -15,7 +15,7 @@ export const creatExplainQuery = (
     explain: async (event: PrismaQueryEventLike) => {
       const explainResult = await executeExplain(prisma, event, cache)
       return explainResult
-    }
+    },
   }
 }
 

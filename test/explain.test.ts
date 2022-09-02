@@ -21,7 +21,7 @@ describe("prisma-mysql-explain", () => {
             f11: "Using where",
           },
         ]
-      }
+      },
     }
 
     it("explainQuery", async () => {
@@ -87,7 +87,7 @@ describe("prisma-mysql-explain", () => {
       $on: (
         _eventType: "query",
         _cb: (event: PrismaQueryEventLike) => void
-      ) => { },
+      ) => {},
     }
     const mockEvent = {
       timestamp: new Date(),
