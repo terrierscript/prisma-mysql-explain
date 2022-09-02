@@ -1,4 +1,4 @@
-import { explain } from "../src/lib/explain"
+import { executeExplain } from "../src/lib/explain"
 import { PrismaClientLike, PrismaQueryEventLike } from "../src/lib/types"
 
 describe("prisma-mysql-explain", () => {
@@ -21,11 +21,7 @@ describe("prisma-mysql-explain", () => {
             f11: "Using where",
           },
         ]
-      },
-      $on: (
-        _eventType: "query",
-        _cb: (event: PrismaQueryEventLike) => void
-      ) => {},
+      }
     }
 
     it("explainQuery", async () => {
@@ -36,7 +32,7 @@ describe("prisma-mysql-explain", () => {
         duration: 66,
         target: "quaint::connector::metrics",
       }
-      const result = await explain(mockClientLike, mockEvent)
+      const result = await executeExplain(mockClientLike, mockEvent)
       expect(result).toEqual([
         {
           id: 1n,
@@ -62,7 +58,7 @@ describe("prisma-mysql-explain", () => {
         duration: 66,
         target: "quaint::connector::metrics",
       }
-      const result = await explain(mockClientLike, mockEvent)
+      const result = await executeExplain(mockClientLike, mockEvent)
 
       expect(result).toEqual([
         {
@@ -91,7 +87,7 @@ describe("prisma-mysql-explain", () => {
       $on: (
         _eventType: "query",
         _cb: (event: PrismaQueryEventLike) => void
-      ) => {},
+      ) => { },
     }
     const mockEvent = {
       timestamp: new Date(),
@@ -100,7 +96,7 @@ describe("prisma-mysql-explain", () => {
       duration: 31,
       target: "quaint::connector::metrics",
     }
-    const result = await explain(mockClientLike, mockEvent)
+    const result = await executeExplain(mockClientLike, mockEvent)
 
     expect(result).toBeUndefined()
   })
